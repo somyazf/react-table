@@ -12,14 +12,13 @@ export default class Table extends Component {
             currentPage: 1,
             addedRowInPage: 3
         };
-        // this.onChangePage = this.onChangePage.bind(this);
     }
-    user = false;
-    first = false;
-    last = false;
+    userName = false;
+    fistName = false;
+    lastName = false;
     sex = false;
-    status = false;
     age = false;
+    status = false;
 
     onChangePage = (event) => {
         this.setState({
@@ -43,24 +42,96 @@ export default class Table extends Component {
         rows[rows.findIndex(_row => _row.id === row.id)] = row;
         this.setState({ rows });
     }
+
+    onSort = (event) => {
+        const {id} = event.target;
+        const {rows} = this.state;
+        // const {columns} = this.props;
+        let sorted = [];
+        if (id === 'username') {
+            if (this.userName) {
+                sorted = rows.sort((a, b) => a.username > b.username ? -1 : 1);
+                this.userName = false;
+            }else {
+                sorted = rows.sort((a, b) => a.username > b.username ? 1 : -1);
+                this.userName = true;
+            }
+        }
+
+        if (id === 'firstName') {
+            if (this.fistName) {
+                sorted = rows.sort((a, b) => a.firstName > b.firstName ? -1 : 1);
+                this.fistName = false;
+            }else {
+                sorted = rows.sort((a, b) => a.firstName > b.firstName ? 1 : -1);
+                this.fistName = true;
+            }
+        }
+
+        if (id === 'lastName') {
+            if (this.lastName) {
+                sorted = rows.sort((a, b) => a.lastName > b.lastName ? -1 : 1);
+                this.lastName = false;
+            }else {
+                sorted = rows.sort((a, b) => a.lastName > b.lastName ? 1 : -1);
+                this.lastName = true;
+            }
+        }
+
+        if (id === 'sex') {
+            if (this.sex) {
+                sorted = rows.sort((a, b) => a.sex > b.sex ? -1 : 1);
+                this.sex = false;
+            }else {
+                sorted = rows.sort((a, b) => a.sex > b.sex ? 1 : -1);
+                this.sex = true;
+            }
+        }
+
+        if (id === 'status') {
+            if (this.status) {
+                sorted = rows.sort((a, b) => a.status > b.status ? -1 : 1);
+                this.status = false;
+            }else {
+                sorted = rows.sort((a, b) => a.status > b.status ? 1 : -1);
+                this.status = true;
+            }
+        }
+
+        if (id === 'age') {
+            if (this.age) {
+                sorted = rows.sort((a, b) => +a.age > +b.age ? -1 : 1);
+                this.age = false;
+            }
+            else {
+                sorted = rows.sort((a, b) => +a.age > b.age ? 1 : -1);
+                this.age = true;
+            }
+        }
+        this.setState({
+            rows: [...sorted]
+        })
+    }
+
     render() {
         const { rows, currentPage, addedRowInPage } = this.state;
-        const { addRow, deleteRow, editRow, sort, props: { columns } } = this;
-        const allRowsPerPage = currentPage * addedRowInPage;
-        const indexOfFirstTodo = allRowsPerPage - addedRowInPage;
-        const rowsPerPage = rows.slice(indexOfFirstTodo, allRowsPerPage);
+        const { addRow, deleteRow, editRow, onSort, props: { columns } } = this;
+        const lastRowToSlice = currentPage * addedRowInPage;
+        const firstRowToSlice = lastRowToSlice - addedRowInPage;
+        debugger;
+        const rowsPerPage = rows.slice(firstRowToSlice, lastRowToSlice);
         const pageNumbers = [];
         for (let i = 1; i <= Math.ceil(rows.length / addedRowInPage); i++) {
             pageNumbers.push(i);
         }
 
-        return <> {/* <React.Fragment> */}
+        return <>
             <h1>Editable Table</h1>
             <table>
                 <Header
                     columns={columns}
                     addRow={addRow}
-                    sort={sort}
+                    onSort={onSort}
                 />
                 <tbody>
                     {rowsPerPage.map((row, index) => {
@@ -68,8 +139,8 @@ export default class Table extends Component {
                     })}
                 </tbody>
             </table>
-            <div>
-                <ul className="pageNumber">
+            <div className="page-number">
+                <ul>
                     {pageNumbers.map(number => {
                         return (
                             <li
