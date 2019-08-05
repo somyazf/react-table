@@ -15,6 +15,7 @@ export default class Header extends Component {
                     return {...obj, [column.name]: (column.initValue !== undefined) ? column.initValue : 0}
                 case 'text':
                     return {...obj, [column.name]: (column.initValue !== undefined) ? column.initValue : ''}
+                default:
             }
         },{});
         this.state = this.initState;
@@ -68,11 +69,11 @@ export default class Header extends Component {
     }
     
     render() {
-        const {columns} = this.props;
+        const {sort,columns} = this.props;
         const disabled = !columns.every(column => column.required ? this.state[column.name] : true )
         return <thead>
             <tr>
-                {columns.map(column=><th key={column.name}>{column.label} {column.required ? '*' : ''}</th>)}
+                {columns.map(column=><th key={column.name} onClick={sort} id={column.name}>{column.label} {column.required ? '*' : ''}</th>)}
                 <th>Action</th>
             </tr>
             <tr>

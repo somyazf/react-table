@@ -1,6 +1,4 @@
 import React,{Component} from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoffee, faAngleDown, faArrowAltCircleDown, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 export default class Row extends Component {
 
@@ -64,17 +62,14 @@ export default class Row extends Component {
         const {isEdit} = this.state
         return <>
             <tr>
-                {columns.map(column=><th>{column.label} <FontAwesomeIcon icon={faCaretDown} onClick={this.onSort}/></th>)}
-            </tr>
-            <tr>
             {isEdit ? this.renderEdit() : columns.map(column=>{
                 switch(column.type){
                     case 'bool':
-                        return <td key={column.name}>{column[row[column.name]]}<span icon="coffee"></span></td>;
+                        return <td key={column.name}>{column[row[column.name]]}</td>;
                     case 'list':
-                        return <td key={column.name}>{column.options.find(option=>option.value === row[column.name]).label}<span className="fa fa-carrot"></span></td>
+                        return <td key={column.name}>{column.options.find(option=>option.value === row[column.name]).label}</td>
                     default:
-                        return <td key={column.name}>{row[column.name]}<span className="sort-icon sort-ascending"></span></td>;
+                        return <td key={column.name}>{row[column.name]}</td>;
                 }
             })}
             <td>
