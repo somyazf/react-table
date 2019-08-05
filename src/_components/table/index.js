@@ -118,7 +118,6 @@ export default class Table extends Component {
         const { addRow, deleteRow, editRow, onSort, props: { columns } } = this;
         const lastRowToSlice = currentPage * addedRowInPage;
         const firstRowToSlice = lastRowToSlice - addedRowInPage;
-        debugger;
         const rowsPerPage = rows.slice(firstRowToSlice, lastRowToSlice);
         const pageNumbers = [];
         for (let i = 1; i <= Math.ceil(rows.length / addedRowInPage); i++) {
